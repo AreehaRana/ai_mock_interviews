@@ -95,11 +95,20 @@ export async function getLatestInterviews(
 ): Promise<Interview[] | null> {
   const { userId, limit = 20 } = params;
 
+  // const interviews = await db
+  //   .collection("interviews")
+  //   .orderBy("createdAt", "desc")
+  //   .where("finalized", "==", true)
+  //   .where("userId", "!=", userId)
+  //   .limit(limit)
+  //   .get();
+
   const interviews = await db
     .collection("interviews")
-    .orderBy("createdAt", "desc")
     .where("finalized", "==", true)
     .where("userId", "!=", userId)
+    .orderBy("userId") // required when using "!="
+    .orderBy("createdAt", "desc") // secondary sort
     .limit(limit)
     .get();
 
